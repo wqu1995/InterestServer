@@ -39,7 +39,7 @@ public class ServerHandler implements Runnable{
         while (!isLogout) {
             try {
                 clientInput = input.readLine();
-               // System.out.println(clientInput);
+                System.out.println(clientInput);
                 switch (clientInput.split(" ")[0]) {
                     case "LOGIN":
                         String date = input.readLine();
@@ -69,7 +69,61 @@ public class ServerHandler implements Runnable{
                         }
                         break;
                     case "CK":
-                        output.writeBytes("IGP 251 No Update\r\n\r\n");
+                        System.out.println("In here");
+                        clientInput = input.readLine();
+                        System.out.println(clientInput);
+                        int[] subGrouops = new int[clientInput.split(" ").length-1];
+                        for(int i = 1, j=0; i<clientInput.split(" ").length; i++)
+                            subGrouops[j++] = Integer.parseInt(clientInput.split(" ")[i]);
+
+                        clientInput = input.readLine();
+                        System.out.println(clientInput);
+
+                        String newLastCheck =clientInput.substring(6, clientInput.length());
+                        DateFormat newFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
+                        try {
+                            lastChecked = newFormat.parse(newLastCheck);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        boolean newPostC = false;
+                        BufferedReader groupNames = new BufferedReader(new FileReader("Groups.txt"));
+                        ArrayList<String> subjects = new ArrayList<String>();
+                        ArrayList<String> groupName = new ArrayList<String>();
+                        ArrayList<String> xGroupName = new ArrayList<String>();
+                        String name;
+                        while((name = groupNames.readLine())!=null){
+                            xGroupName.add(name);
+                        }
+                        groupNames.close();
+                        for(int d = 0; d<subGrouops.length; d++){
+                            BufferedReader postCheck = new BufferedReader(new FileReader("Group_"+subGrouops[d]+"_Post.txt"));
+                            String line;
+                            while((line = postCheck.readLine())!=null){
+                                String postDate = line.substring(4,32);
+                                Date postDate1 = newFormat.parse(postDate);
+                                if(postDate1.after(lastChecked)){
+                                    newPostC = true;
+                                    subjects.add(line.substring(33, line.length()));
+                                    groupName.add(xGroupName.get(subGrouops[d]-1));
+                                }
+
+
+                            }
+
+                        }
+                        if(newPostC){
+                            output.writeBytes("IGP 250 New Posts\r\n\r\n");
+                            for(int x = 0; x<subjects.size();x++){
+                                output.writeBytes(subjects.get(x)+"\r\n");
+                                output.writeBytes(groupName.get(x)+"\r\n");
+                            }
+                            output.writeBytes("\r\n");
+                        }
+                        else{
+                            output.writeBytes("IGP 251 No Update\r\n\r\n");
+                        }
+
                         break;
                     case "SG":
                         clientInput = input.readLine();
@@ -79,7 +133,7 @@ public class ServerHandler implements Runnable{
                         }
                         clientInput = input.readLine();
 
-                        String[] readPosts = new String[clientInput.split("").length-1];
+                        String[] readPosts = new String[clientInput.split(" ").length-1];
 
                         for(int i =1, j = 0; i<clientInput.split(" ").length; i++){
                             readPosts[j++] = clientInput.split(" ")[i];
@@ -98,7 +152,7 @@ public class ServerHandler implements Runnable{
                                 int counter = groupPostIDs.size();
                                 for(int x = 0; x<groupPostIDs.size(); x++){
                                     for(int j = 0; j < readPosts.length; j++){
-                                        if((groupPostIDs.contains(readPosts[j])))
+                                        if((groupPostIDs.get(x).equals(readPosts[j])))
                                             counter = counter -1;
                                     }
                                 }
@@ -175,6 +229,8 @@ public class ServerHandler implements Runnable{
 
                 //System.out.println(clientInput);
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
 

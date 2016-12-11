@@ -39,7 +39,7 @@ public class ServerHandler implements Runnable{
         while (!isLogout) {
             try {
                 clientInput = input.readLine();
-                System.out.println(clientInput);
+               // System.out.println(clientInput);
                 switch (clientInput.split(" ")[0]) {
                     case "LOGIN":
                         String date = input.readLine();
@@ -136,8 +136,40 @@ public class ServerHandler implements Runnable{
                         }
                         break;
                     case "NP":
-                        System.out.println("asd");
+                        String groupIndex  = clientInput.split(" ")[1];
+                        BufferedReader posts = new BufferedReader(new FileReader("Group_"+groupIndex+"_Post.txt"));
+                        int postIndex = 1;
+                        String line;
+                        while((line = posts.readLine())!=null){
+                            postIndex++;
+                        }
+                        BufferedWriter newPost = new BufferedWriter(new FileWriter(groupIndex+"-"+postIndex+".txt"));
+                        clientInput = input.readLine();
+                        clientInput = input.readLine();
+                        newPost.write(clientInput+"\n");
 
+                        clientInput = input.readLine();
+                        String subject = clientInput.substring(9, clientInput.length());
+                        newPost.write(clientInput+"\n");
+
+                        clientInput = input.readLine();
+                        newPost.write(clientInput+"\n");
+
+                        clientInput = input.readLine();
+                        String newDate = clientInput.substring(6,clientInput.length());
+                        newPost.write(clientInput+"\n");
+
+                        while(!(clientInput = input.readLine()).equals(".")){
+                            newPost.write(clientInput+"\n");
+                        }
+                        newPost.write(".");
+                        newPost.close();
+                        String newPostContent = groupIndex+"-"+postIndex+" "+newDate+" "+subject;
+                        System.out.println(newPostContent);
+                        BufferedWriter postModifier = new BufferedWriter(new FileWriter("Group_"+groupIndex+"_Post.txt", true));
+                        postModifier.append("\n"+newPostContent);
+                        postModifier.close();
+                        output.writeBytes("IGP 320 Created\r\n\r\n");
 
                 }
 

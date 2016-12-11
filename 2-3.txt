@@ -1,0 +1,25 @@
+Group: comp.lang.python 
+Subject: mamaipi
+Author: Gern Blanston
+Date: Sat, Nov 12 19:34:03 EST 2016 
+
+I have a dictionary of values read from two fields in a database: a string field and a numeric field. The string field is unique, so that is the key of the dictionary. 
+I can sort on the keys, but how can I sort based on the values?
+
+I have a dictionary of values read from two fields in a database: a string field and a numeric field. The string field is unique, so that is the key of the dictionary. 
+I can sort on the keys, but how can I sort based on the values?
+
+I have a dictionary of values read from two fields in a database: a string field and a numeric field. The string field is unique, so that is the key of the dictionary. 
+I can sort on the keys, but how can I sort based on the values?
+
+I have a dictionary of values read from two fields in a database: a string field and a numeric field. The string field is unique, so that is the key of the dictionary. 
+I can sort on the keys, but how can I sort based on the values?
+
+I have a dictionary of values read from two fields in a database: a string field and a numeric field. The string field is unique, so that is the key of the dictionary. 
+I can sort on the keys, but how can I sort based on the values?
+
+I have a dictionary of values read from two fields in a database: a string field and a numeric field. The string field is unique, so that is the key of the dictionary. 
+I can sort on the keys, but how can I sort based on the values?
+I have a dictionary of values read from two fields in a database: a string field and a numeric field. The string field is unique, so that is the key of the dictionary. 
+I can sort on the keys, but how can I sort based on the values?
+.
